@@ -25,7 +25,11 @@ public class BathroomDescription extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bathroom_description);
-
+        position = getIntent().getIntExtra("position", -1);
+        if (position == -1) {
+            finish();
+            Toast.makeText(this, "An error occurred.", Toast.LENGTH_SHORT).show();
+        }
         final Button rateUp, rateDown, addDescription;
         rateUp = (Button) findViewById(R.id.rate_up);
         rateDown = (Button) findViewById(R.id.rate_down);
@@ -49,7 +53,7 @@ public class BathroomDescription extends Activity {
                         String value = input.getText().toString();
                         HashMap<String, Object> params = new HashMap<String, Object>();
                         params.put("description", value);
-                        params.put("bathroom", ITEMS.GET(POSITION));
+                        params.put("bathroom", MainPage.items.get(position));
                         ParseCloud.callFunctionInBackground("addDescription", params, new FunctionCallback<Void>() {
                             @Override
                             public void done(Void v, ParseException e) {

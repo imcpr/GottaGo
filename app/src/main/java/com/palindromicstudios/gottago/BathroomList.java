@@ -1,6 +1,7 @@
 package com.palindromicstudios.gottago;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -123,7 +124,9 @@ public class BathroomList extends ActionBarActivity {
         public void onClick(View v) {
             int position = mRecyclerView.getChildPosition(v);
             String item = MainPage.items.get(position).getString("bathroomName");
-            //...
+            Intent intent = new Intent(BathroomList.this, BathroomDescription.class);
+            intent.putExtra("position", position);
+            startActivity(intent);
         }
     };
 
