@@ -66,12 +66,40 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                 if (hasLocation || 0 == 0) {
                     items.clear();
                     mLocationManager.removeUpdates(MainPage.this);
-                    Intent intent = new Intent(MainPage.this, BathroomList.class);
+                    ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
+                    HashMap<String,Object> parameters = new HashMap<String,Object>();
+                    parameters.put("location",location);
+                    parameters.put("limit", 10);
+
+                    ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
+                        @Override
+                        public void done(List<ParseObject> objects, ParseException e) {
+
+                            if (e == null) {
+                                if (objects.size() > 0) {
+                                    for (int i = 0; i < objects.size(); i++) {
+                                        items.add(String.valueOf(objects.get(i).getString("bathroomName")));
+                                        Log.d("Name: ", objects.get(i).getString("bathroomName"));
+                                    }
+                                    Intent intent = new Intent(MainPage.this, BathroomList.class);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+
+                                } else {
+                                    Log.d("Size less than 0", "");
+                                }
+
+                            } else {
+                                Log.e("checkBathroom failed", e.toString());
+                            }
+                        }
+                    });
+
+                    //Intent intent = new Intent(MainPage.this, BathroomList.class);
                     //Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
-                    intent.putExtra(USER_LONG, aLong);
-                    intent.putExtra(USER_LAT, aLat);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+                    //intent.putExtra(USER_LONG, aLong);
+                    //intent.putExtra(USER_LAT, aLat);
+                    //startActivity(intent);
                 }
                 else {
                     Toast.makeText(MainPage.this, "Please try again later.", Toast.LENGTH_SHORT).show();
@@ -110,6 +138,7 @@ public class MainPage extends ActionBarActivity implements LocationListener {
             ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
             HashMap<String,Object> parameters = new HashMap<String,Object>();
             parameters.put("location",location);
+            parameters.put("limit", 5);
 
             ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
                 @Override
