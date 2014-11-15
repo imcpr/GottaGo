@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.text.ParseException;
+
 
 public class AddBathroom extends Activity {
 
@@ -12,6 +14,7 @@ public class AddBathroom extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bathroom);
+
     }
 
 
