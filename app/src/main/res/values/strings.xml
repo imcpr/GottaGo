@@ -7,5 +7,6 @@
     <string name="title_activity_add_bathroom">AddBathroom</string>
     <string name="title_activity_bathroom_list">BathroomList</string>
     <string name="title_activity_confirm">ConfirmActivity</string>
+    <string name="title_activity_bathroom_description">BathroomDescription</string>
 
 </resources>

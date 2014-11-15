@@ -26,20 +26,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Floor #"
+        android:text="Comments or description:"
         android:layout_below="@id/buildingText"
         android:id="@+id/textView3" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addBuildingText"
-        android:layout_below="@id/textView3" />
+        android:id="@+id/addComments"
+        android:layout_below="@id/textView3"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:ems="10" />
 
     <Button
         android:text="Submit"
+        android:id="@+id/add_submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
+
 
 </RelativeLayout>

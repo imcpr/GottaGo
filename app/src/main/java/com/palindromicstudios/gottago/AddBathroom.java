@@ -2,19 +2,53 @@ package com.palindromicstudios.gottago;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseGeoPoint;
 
 import java.text.ParseException;
+import java.util.HashMap;
 
 
-public class AddBathroom extends Activity {
+public class AddBathroom extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bathroom);
+        Button submitButton = (Button) findViewById(R.id.add_submit_button);
+        submitButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseGeoPoint location= new ParseGeoPoint(MainPage.aLong,MainPage.aLat);
+                HashMap<String,Object> parameters = new HashMap<String,Object>();
+                EditText buildingName = (EditText) findViewById(R.id.buildingText);
+                EditText addComments = (EditText) findViewById(R.id.addComments);
+                parameters.put("bathroomName",buildingName.getText().toString());
+                parameters.put("description",addComments.getText().toString());
+                parameters.put("geoPoint",location);
+                ParseCloud.callFunctionInBackground("addBathroom", parameters, new FunctionCallback() {
+                    public void done(Object object, com.parse.ParseException e) {
 
+                        if (e == null) {
+                            Toast.makeText(AddBathroom.this, "New bathroom succesfully added!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("addBathroom failed", e.toString());
+                        }
+                    }
+                });
+            }
+
+        });
     }
 
 

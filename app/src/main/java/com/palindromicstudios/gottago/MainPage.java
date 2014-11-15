@@ -38,8 +38,8 @@ public class MainPage extends ActionBarActivity implements LocationListener {
     public final static String USER_LAT = "com.palindromicstudios.LAT";
     private boolean hasLocation = false;
     LocationManager mLocationManager;
-    private double aLong = 0.0;
-    private double aLat = 0.0;
+    public static double aLong = 0.0;
+    public static double aLat = 0.0;
     public static List<String> items;
 
     @Override
