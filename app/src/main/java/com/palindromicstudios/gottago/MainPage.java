@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class MainPage extends ActionBarActivity implements LocationListener {
+public class MainPage extends ActionBarActivity  {
 
     public final static String USER_LONG = "com.palindromicstudios.LONG";
     public final static String USER_LAT = "com.palindromicstudios.LAT";
@@ -59,6 +59,41 @@ public class MainPage extends ActionBarActivity implements LocationListener {
         toolbar.setTitle("Tap to find the nearest one...");
         setSupportActionBar(toolbar);
 
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        final LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("Location changed", "true");
+                hasLocation = true;
+                aLat = location.getLatitude();
+                aLong = location.getLongitude();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*60, 0, locationListener);
+        }
+        else {
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000*60, 0, locationListener);
+        }
+
         AlphaAnimation blinkanimation= new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
         blinkanimation.setDuration(500); // duration - half a second
         blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
@@ -71,10 +106,9 @@ public class MainPage extends ActionBarActivity implements LocationListener {
 
             @Override
             public void onClick(View v) {
-                // TODO remove 0 == 0
-                if (hasLocation || 0 == 0) {
+                if (hasLocation) {
                     items.clear();
-                    mLocationManager.removeUpdates(MainPage.this);
+
                     ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
                     HashMap<String,Object> parameters = new HashMap<String,Object>();
                     parameters.put("location", location);
@@ -95,7 +129,7 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                                     overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
 
                                 } else {
-                                    Log.d("Size less than 0", "");
+                                    Log.d("Size is 0", "");
                                 }
 
                             } else {
@@ -126,7 +160,7 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                 HashMap<String,Object> parameters = new HashMap<String,Object>();
                 parameters.put("location",location);
                 parameters.put("limit", 5);
-                mLocationManager.removeUpdates(MainPage.this);
+                mLocationManager.removeUpdates(locationListener);
 
                 ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
                     @Override
@@ -152,15 +186,7 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                 });
             }
         });
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-
-        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }
-        else {
-            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        }
     }
 
 
@@ -212,43 +238,8 @@ public class MainPage extends ActionBarActivity implements LocationListener {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        if (location != null) {
-            Log.i("Location Changed", location.getLatitude() + " and " + location.getLongitude());
-//            mLocationManager.removeUpdates(this);
-            aLong = location.getLongitude();
-            aLat = location.getLatitude();
-            hasLocation = true;
-        }
-    }
 
-    public void onProviderDisabled(String arg0) {}
-    public void onProviderEnabled(String arg0) {}
-    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}
 
-    LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            Log.i("Location changed", "true");
-            hasLocation = true;
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    };
 
 
 }
