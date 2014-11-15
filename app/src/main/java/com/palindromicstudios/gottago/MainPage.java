@@ -40,13 +40,13 @@ public class MainPage extends ActionBarActivity implements LocationListener {
     LocationManager mLocationManager;
     public static double aLong = 0.0;
     public static double aLat = 0.0;
-    public static List<String> items;
+    public static List<ParseObject> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        items = new ArrayList<String>();
+        items = new ArrayList<ParseObject>();
 //        items.add("Starbucks (Parc/Sherbrooke)");
 //        items.add("Second Cup (Parc/Milton");
 //        items.add("Schulich Music Building (Sherbrooke/Aylmer)");
@@ -78,7 +78,7 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                             if (e == null) {
                                 if (objects.size() > 0) {
                                     for (int i = 0; i < objects.size(); i++) {
-                                        items.add(String.valueOf(objects.get(i).getString("bathroomName")));
+                                        items.add(objects.get(i));
                                         Log.d("Name: ", objects.get(i).getString("bathroomName"));
                                     }
                                     Intent intent = new Intent(MainPage.this, BathroomList.class);
@@ -147,7 +147,7 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                     if (e == null) {
                         if (objects.size() > 0) {
                             for (int i = 0; i < objects.size(); i++) {
-                                items.add(String.valueOf(objects.get(i).getString("bathroomName")));
+                                items.add(objects.get(i));
                             }
                             Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
                             startActivity(intent);

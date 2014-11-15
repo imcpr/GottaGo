@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -89,10 +91,10 @@ public class ConfirmActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
-        private List<String> items;
+        private List<ParseObject> items;
         private int lastPosition = -1;
 
-        public MyAdapter(List<String> items) {
+        public MyAdapter(List<ParseObject> items) {
             this.items = items;
         }
 
@@ -103,7 +105,8 @@ public class ConfirmActivity extends Activity {
 
         @Override
         public void onBindViewHolder(MyHolder holder, int position) {
-            String str = items.get(position);
+            ParseObject object = items.get(position);
+            String str = object.getString("bathroomName");
             holder.text.setText(str);
             setAnimation(holder.container, position);
         }
