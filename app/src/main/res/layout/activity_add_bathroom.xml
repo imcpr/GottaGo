@@ -1,3 +1,5 @@
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -42,6 +44,12 @@
         android:lines="3"
         android:background="@android:color/white"
         android:ems="10" />
+
+    <Button
+        android:id="@+id/addImageButton"
+        android:layout_below="@id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <Button
         android:text="Submit"

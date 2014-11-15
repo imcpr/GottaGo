@@ -45,10 +45,8 @@ public class ConfirmActivity extends Activity {
         confirmList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         confirmList.setLayoutManager(mLayoutManager);
-        Log.v("items", MainPage.items.toString());
-        // Create ArrayAdapter using the planet list.
         mAdapter = new MyAdapter(MainPage.items);
-        confirmList.setAdapter( mAdapter );
+        confirmList.setAdapter(mAdapter);
 
         Button noButton = (Button) findViewById(R.id.buttonDeclineAdd);
         noButton.setOnClickListener( new View.OnClickListener() {
