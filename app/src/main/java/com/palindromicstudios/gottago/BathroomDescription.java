@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 
 public class BathroomDescription extends Activity {
-
+    private int position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
