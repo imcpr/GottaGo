@@ -1,6 +1,7 @@
 package com.palindromicstudios.gottago;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -45,6 +47,7 @@ public class ConfirmActivity extends Activity {
         // Create ArrayAdapter using the planet list.
         mAdapter = new MyAdapter(MainPage.items);
         confirmList.setAdapter( mAdapter );
+
         Button noButton = (Button) findViewById(R.id.buttonDeclineAdd);
         noButton.setOnClickListener( new View.OnClickListener() {
 
@@ -129,6 +132,7 @@ public class ConfirmActivity extends Activity {
             }
         }
     }
+
 
     public class MyHolder extends RecyclerView.ViewHolder {
         private TextView text;

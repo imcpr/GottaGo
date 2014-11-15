@@ -102,6 +102,7 @@ public class BathroomList extends ActionBarActivity {
         @Override
         public MyHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
             View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_item_layout, viewGroup, false);
+            itemView.setOnClickListener(mOnClickListener);
             return new MyHolder(itemView);
         }
 
@@ -116,6 +117,15 @@ public class BathroomList extends ActionBarActivity {
             }
         }
     }
+
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int position = mRecyclerView.getChildPosition(v);
+            String item = MainPage.items.get(position).getString("bathroomName");
+            //...
+        }
+    };
 
     public class MyHolder extends RecyclerView.ViewHolder {
         private TextView text;

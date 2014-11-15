@@ -17,17 +17,8 @@
         android:layout_height="match_parent"
         android:id="@+id/descriptionListView"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/buttonConfirmAdd"
-        android:layout_below="@+id/textView" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:id="@+id/buttonBackListBathrooms"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/buttonAddDescription"
+        android:layout_below="@+id/bathroomName" />
 
     <Button
         android:layout_width="wrap_content"
