@@ -109,7 +109,7 @@ public class MainPage extends ActionBarActivity  {
                 if (hasLocation) {
                     items.clear();
 
-                    ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
+                    ParseGeoPoint location= new ParseGeoPoint(aLat,aLong);
                     HashMap<String,Object> parameters = new HashMap<String,Object>();
                     parameters.put("location", location);
                     parameters.put("limit", 10);
@@ -156,7 +156,7 @@ public class MainPage extends ActionBarActivity  {
             public void onClick(View v)
             {
                 items.clear();
-                ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
+                ParseGeoPoint location= new ParseGeoPoint(aLat,aLong);
                 HashMap<String,Object> parameters = new HashMap<String,Object>();
                 parameters.put("location",location);
                 parameters.put("limit", 5);

@@ -19,9 +19,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 import java.lang.reflect.AccessibleObject;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class BathroomList extends ActionBarActivity {
@@ -96,13 +98,19 @@ public class BathroomList extends ActionBarActivity {
         public void onBindViewHolder(MyHolder holder, int position) {
             ParseObject object = items.get(position);
             String str = object.getString("bathroomName");
+            ParseGeoPoint geoPoint = object.getParseGeoPoint("geoPoint");
+            ParseGeoPoint location = new ParseGeoPoint(MainPage.aLat, MainPage.aLong);
+            double distance = geoPoint.distanceInKilometersTo(location)*1000;
+            NumberFormat format = NumberFormat.getInstance();
+            format.setMaximumFractionDigits(0);
             holder.text.setText(str);
+            holder.distance.setText(format.format(distance) + "m");
             setAnimation(holder.container, position);
         }
 
         @Override
         public MyHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-            View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_item_layout, viewGroup, false);
+            View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_item_layout_with_distance, viewGroup, false);
             itemView.setOnClickListener(mOnClickListener);
             return new MyHolder(itemView);
         }
@@ -133,11 +141,12 @@ public class BathroomList extends ActionBarActivity {
     };
 
     public class MyHolder extends RecyclerView.ViewHolder {
-        private TextView text;
+        private TextView text, distance;
         private CardView container;
         public MyHolder(View v) {
             super(v);
             text = (TextView) v.findViewById(R.id.text1);
+            distance = (TextView) v.findViewById(R.id.text2);
             container = (CardView) v.findViewById(R.id.card_view);
         }
     }
