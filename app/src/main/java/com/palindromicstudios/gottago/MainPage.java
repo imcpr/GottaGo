@@ -17,6 +17,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +59,7 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                 if (hasLocation || 0 == 0) {
                     mLocationManager.removeUpdates(MainPage.this);
                     Intent intent = new Intent(MainPage.this, BathroomList.class);
+                    //Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
                     intent.putExtra(USER_LONG, aLong);
                     intent.putExtra(USER_LAT, aLat);
                     startActivity(intent);
@@ -89,7 +96,33 @@ public class MainPage extends ActionBarActivity implements LocationListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_add) {
+        if (id == R.id.action_add)
+        {
+            ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
+            HashMap<String,Object> parameters = new HashMap<String,Object>();
+            parameters.put("location",location);
+
+            ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<Object>>() {
+                public void done(List<Object> objects, ParseException e) {
+
+                    if (e == null) {
+                        if (objects.size() > 0) {
+                            for (int i = 0; i < objects.size(); i++) {
+                                items.add(String.valueOf(objects.get(i)));
+                            }
+                            Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(MainPage.this, AddBathroom.class);
+                            startActivity(intent);
+                        }
+
+                    } else {
+                        Log.e("checkBathroom failed", "checkBathroom failed");
+                    }
+                }
+            });
+
             Intent intent = new Intent(this, AddBathroom.class);
             startActivity(intent);
         }
