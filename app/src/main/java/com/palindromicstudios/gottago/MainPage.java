@@ -21,15 +21,10 @@ import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class MainPage extends ActionBarActivity implements LocationListener {
@@ -47,24 +42,21 @@ public class MainPage extends ActionBarActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         items = new ArrayList<String>();
-//        items.add("Starbucks (Parc/Sherbrooke)");
-//        items.add("Second Cup (Parc/Milton");
-//        items.add("Schulich Music Building (Sherbrooke/Aylmer)");
+        items.add("Starbucks (Parc/Sherbrooke)");
+        items.add("Second Cup (Parc/Milton");
+        items.add("Schulich Music Building (Sherbrooke/Aylmer)");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
         setSupportActionBar(toolbar);
-
-
 
         ImageButton peeButton = (ImageButton) findViewById(R.id.peeButton);
         peeButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO remove 0 == 0
+                // TODO Auto-generated method stub
                 if (hasLocation || 0 == 0) {
-                    items.clear();
                     mLocationManager.removeUpdates(MainPage.this);
                     Intent intent = new Intent(MainPage.this, BathroomList.class);
                     //Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
@@ -106,19 +98,17 @@ public class MainPage extends ActionBarActivity implements LocationListener {
         int id = item.getItemId();
         if (id == R.id.action_add)
         {
-            items.clear();
             ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
             HashMap<String,Object> parameters = new HashMap<String,Object>();
             parameters.put("location",location);
 
-            ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
-                @Override
-                public void done(List<ParseObject> objects, ParseException e) {
+            ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<Object>>() {
+                public void done(List<Object> objects, ParseException e) {
 
                     if (e == null) {
                         if (objects.size() > 0) {
                             for (int i = 0; i < objects.size(); i++) {
-                                items.add(String.valueOf(objects.get(i).getString("bathroomName")));
+                                items.add(String.valueOf(objects.get(i)));
                             }
                             Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
                             startActivity(intent);
@@ -128,12 +118,13 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                         }
 
                     } else {
-                        Log.e("checkBathroom failed", e.toString());
+                        Log.e("checkBathroom failed", "checkBathroom failed");
                     }
                 }
             });
 
-
+            Intent intent = new Intent(this, AddBathroom.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

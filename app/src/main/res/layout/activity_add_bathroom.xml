@@ -9,32 +9,37 @@
     tools:context="com.palindromicstudios.gottago.AddBathroom">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Building Name"
+        android:text="Building Name:"
         android:id="@+id/textView2" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buildingText" />
+        android:id="@+id/buildingText"
+        android:layout_below="@id/textView2"/>
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Floor #"
+        android:layout_below="@id/buildingText"
         android:id="@+id/textView3" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addBuildingText" />
+        android:id="@+id/addBuildingText"
+        android:layout_below="@id/textView3" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
