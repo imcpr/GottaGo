@@ -122,11 +122,13 @@ public class BathroomList extends ActionBarActivity {
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Log.d("AA", "1");
             int position = mRecyclerView.getChildPosition(v);
-            String item = MainPage.items.get(position).getString("bathroomName");
+            //String item = MainPage.items.get(position).getString("bathroomName");
             Intent intent = new Intent(BathroomList.this, BathroomDescription.class);
             intent.putExtra("position", position);
             startActivity(intent);
+            Log.d("AA", "2");
         }
     };
 
