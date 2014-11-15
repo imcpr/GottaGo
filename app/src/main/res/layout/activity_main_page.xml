@@ -1,12 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".MainPage">
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainPage" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:background="@color/orange"/>
+
+    <RelativeLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <TextView
         android:text="GottaGo"
@@ -15,7 +23,8 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"/>
 
     <ImageButton
         android:id="@+id/peeButton"
@@ -24,4 +33,6 @@
         android:layout_centerInParent="true"
         android:background="@null"
         android:src="@drawable/toilet_icon" />
-</RelativeLayout>
+
+    </RelativeLayout>
+</LinearLayout>

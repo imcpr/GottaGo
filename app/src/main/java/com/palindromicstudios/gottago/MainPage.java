@@ -6,6 +6,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +17,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 
-public class MainPage extends Activity implements LocationListener {
+public class MainPage extends ActionBarActivity implements LocationListener {
 
     public final static String USER_LONG = "com.palindromicstudios.LONG";
     public final static String USER_LAT = "com.palindromicstudios.LAT";
@@ -28,6 +30,9 @@ public class MainPage extends Activity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ImageButton peeButton = (ImageButton) findViewById(R.id.peeButton);
         peeButton.setOnClickListener( new View.OnClickListener() {
 
