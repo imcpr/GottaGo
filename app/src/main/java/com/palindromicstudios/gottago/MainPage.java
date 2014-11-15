@@ -12,13 +12,14 @@ import android.view.MenuItem;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 
 public class MainPage extends Activity implements LocationListener {
 
     public final static String USER_LONG = "com.palindromicstudios.LONG";
     public final static String USER_LAT = "com.palindromicstudios.LAT";
-
+    private boolean hasLocation = false;
     LocationManager mLocationManager;
     private double aLong = 0.0;
     private double aLat = 0.0;
@@ -33,11 +34,16 @@ public class MainPage extends Activity implements LocationListener {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                mLocationManager.removeUpdates(MainPage.this);
-                Intent intent = new Intent(MainPage.this, BathroomList.class);
-                intent.putExtra(USER_LONG, aLong);
-                intent.putExtra(USER_LAT, aLat);
-                startActivity(intent);
+                if (hasLocation) {
+                    mLocationManager.removeUpdates(MainPage.this);
+                    Intent intent = new Intent(MainPage.this, BathroomList.class);
+                    intent.putExtra(USER_LONG, aLong);
+                    intent.putExtra(USER_LAT, aLat);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(MainPage.this, "Please try again later.", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -79,6 +85,7 @@ public class MainPage extends Activity implements LocationListener {
 //            mLocationManager.removeUpdates(this);
             aLong = location.getLongitude();
             aLat = location.getLatitude();
+            hasLocation = true;
         }
     }
 
