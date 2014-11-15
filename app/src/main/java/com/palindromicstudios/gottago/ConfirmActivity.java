@@ -51,13 +51,13 @@ public class ConfirmActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                onBackPressed();
+                finish();
                 Log.v("backpressed", "gobackkk");
             }
         });
 
         Button yesButton = (Button) findViewById(R.id.buttonConfirmAdd);
-        noButton.setOnClickListener( new View.OnClickListener() {
+        yesButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -85,6 +85,7 @@ public class ConfirmActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            finish();
             return true;
         }
 
