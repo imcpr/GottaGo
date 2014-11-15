@@ -43,8 +43,13 @@ public class MainPage extends Activity implements LocationListener {
         });
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }
+        else {
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        }
     }
 
 
