@@ -60,7 +60,7 @@
             android:textColor="@color/blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add description"
+            android:text="Add comment"
             android:id="@+id/buttonAddDescription"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true" />
@@ -103,7 +103,7 @@
                 android:id="@+id/launch_map_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@android:drawable/ic_dialog_map"/>
+                android:src="@drawable/map_marker"/>
 
         </LinearLayout>
         </RelativeLayout>

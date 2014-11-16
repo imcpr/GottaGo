@@ -45,11 +45,22 @@
         android:background="@android:color/white"
         android:ems="10" />
 
+    <TextView
+        android:text="Upload an image here..."
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addImageButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <Button
         android:id="@+id/addImageButton"
-        android:layout_below="@id/textView3"
+        android:text="Attach"
+        android:layout_below="@id/addComments"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"/>
+
 
     <Button
         android:text="Submit"
