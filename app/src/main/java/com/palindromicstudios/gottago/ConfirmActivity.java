@@ -67,6 +67,7 @@ public class ConfirmActivity extends Activity {
                 // TODO Auto-generated method stub
                 Intent intent = new Intent(ConfirmActivity.this, AddBathroom.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
             }
         });
     }

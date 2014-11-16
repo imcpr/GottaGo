@@ -14,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -53,11 +56,17 @@ public class MainPage extends ActionBarActivity implements LocationListener {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+        toolbar.setTitle("Tap to find the nearest one...");
         setSupportActionBar(toolbar);
 
-
+        AlphaAnimation blinkanimation= new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+        blinkanimation.setDuration(500); // duration - half a second
+        blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+        blinkanimation.setRepeatMode(Animation.REVERSE);
 
         ImageButton peeButton = (ImageButton) findViewById(R.id.peeButton);
+        peeButton.startAnimation(blinkanimation);
         peeButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
@@ -68,7 +77,7 @@ public class MainPage extends ActionBarActivity implements LocationListener {
                     mLocationManager.removeUpdates(MainPage.this);
                     ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
                     HashMap<String,Object> parameters = new HashMap<String,Object>();
-                    parameters.put("location",location);
+                    parameters.put("location", location);
                     parameters.put("limit", 10);
 
                     ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
@@ -107,6 +116,42 @@ public class MainPage extends ActionBarActivity implements LocationListener {
 
             }
         });
+        ImageButton addButton = (ImageButton) findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                items.clear();
+                ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
+                HashMap<String,Object> parameters = new HashMap<String,Object>();
+                parameters.put("location",location);
+                parameters.put("limit", 5);
+                mLocationManager.removeUpdates(MainPage.this);
+
+                ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+
+                        if (e == null) {
+                            if (objects.size() > 0) {
+                                for (int i = 0; i < objects.size(); i++) {
+                                    items.add(objects.get(i));
+                                }
+                                Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(MainPage.this, AddBathroom.class);
+                                startActivity(intent);
+                            }
+                            overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+
+                        } else {
+                            Log.e("checkBathroom failed", e.toString());
+                        }
+                    }
+                });
+            }
+        });
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
@@ -132,35 +177,35 @@ public class MainPage extends ActionBarActivity implements LocationListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_add)
+//        if (id == R.id.action_add)
         {
-            items.clear();
-            ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
-            HashMap<String,Object> parameters = new HashMap<String,Object>();
-            parameters.put("location",location);
-            parameters.put("limit", 5);
-
-            ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
-                @Override
-                public void done(List<ParseObject> objects, ParseException e) {
-
-                    if (e == null) {
-                        if (objects.size() > 0) {
-                            for (int i = 0; i < objects.size(); i++) {
-                                items.add(objects.get(i));
-                            }
-                            Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(MainPage.this, AddBathroom.class);
-                            startActivity(intent);
-                        }
-
-                    } else {
-                        Log.e("checkBathroom failed", e.toString());
-                    }
-                }
-            });
+//            items.clear();
+//            ParseGeoPoint location= new ParseGeoPoint(aLong,aLat);
+//            HashMap<String,Object> parameters = new HashMap<String,Object>();
+//            parameters.put("location",location);
+//            parameters.put("limit", 5);
+//
+//            ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
+//                @Override
+//                public void done(List<ParseObject> objects, ParseException e) {
+//
+//                    if (e == null) {
+//                        if (objects.size() > 0) {
+//                            for (int i = 0; i < objects.size(); i++) {
+//                                items.add(objects.get(i));
+//                            }
+//                            Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
+//                            startActivity(intent);
+//                        } else {
+//                            Intent intent = new Intent(MainPage.this, AddBathroom.class);
+//                            startActivity(intent);
+//                        }
+//
+//                    } else {
+//                        Log.e("checkBathroom failed", e.toString());
+//                    }
+//                }
+//            });
 
 
         }

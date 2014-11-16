@@ -9,6 +9,7 @@
     tools:context="com.palindromicstudios.gottago.AddBathroom">
 
     <TextView
+        android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -19,10 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/buildingText"
-        android:layout_below="@id/textView2"/>
+        android:layout_below="@id/textView2"
+        android:background="@android:color/white"/>
 
 
     <TextView
+        android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -37,10 +40,12 @@
         android:layout_below="@id/textView3"
         android:inputType="textMultiLine"
         android:lines="3"
+        android:background="@android:color/white"
         android:ems="10" />
 
     <Button
         android:text="Submit"
+        android:background="@android:color/white"
         android:id="@+id/add_submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
