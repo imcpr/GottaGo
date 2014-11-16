@@ -55,7 +55,7 @@ public class AddBathroom extends ActionBarActivity {
         submitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseGeoPoint location= new ParseGeoPoint(MainPage.aLong,MainPage.aLat);
+                ParseGeoPoint location= new ParseGeoPoint(MainPage.aLat,MainPage.aLong);
                 HashMap<String,Object> parameters = new HashMap<String,Object>();
                 EditText buildingName = (EditText) findViewById(R.id.buildingText);
                 EditText addComments = (EditText) findViewById(R.id.addComments);

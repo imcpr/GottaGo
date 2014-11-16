@@ -28,10 +28,13 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -200,6 +203,17 @@ public class BathroomDescription extends ActionBarActivity {
                 rateDown.setClickable(false);
                 rateUp.setVisibility(View.INVISIBLE);
                 rateDown.setVisibility(View.INVISIBLE);
+            }
+
+        });
+
+        ParseFile image = MainPage.items.get(position).getParseFile("ImgFile");
+        ParseImageView parseImageView = (ParseImageView) findViewById(R.id.parseImageView);
+        parseImageView.setParseFile(image);
+        parseImageView.loadInBackground(new GetDataCallback(){
+            public void done(byte[] data, ParseException e){
+                Log.v("load image success","loaded shit");
+                if (e != null) Log.e("Image error", e.toString());
             }
 
         });
