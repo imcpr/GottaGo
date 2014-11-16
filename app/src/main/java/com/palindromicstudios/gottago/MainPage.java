@@ -94,8 +94,8 @@ public class MainPage extends ActionBarActivity  {
             mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000*60, 0, locationListener);
         }
 
-        AlphaAnimation blinkanimation= new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
-        blinkanimation.setDuration(500); // duration - half a second
+        AlphaAnimation blinkanimation= new AlphaAnimation(1.0f, 0.5f); // Change alpha from fully visible to invisible
+        blinkanimation.setDuration(1000); // duration - half a second
         blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
         blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
         blinkanimation.setRepeatMode(Animation.REVERSE);
