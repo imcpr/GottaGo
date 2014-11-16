@@ -30,7 +30,7 @@ import java.util.HashMap;
 
 
 public class AddBathroom extends ActionBarActivity {
-//    ParseFile ImgFile;
+    //    ParseFile ImgFile;
     private byte[] image;
     final int SELECT_PHOTO= 1;
     @Override
@@ -59,10 +59,13 @@ public class AddBathroom extends ActionBarActivity {
                 HashMap<String,Object> parameters = new HashMap<String,Object>();
                 EditText buildingName = (EditText) findViewById(R.id.buildingText);
                 EditText addComments = (EditText) findViewById(R.id.addComments);
-                Log.d("image value",image.toString());
-                ParseFile ImgFile = new ParseFile("VICTORY.jpg", image);
+                ParseFile ImgFile = null;
+                if (image!=null) {
+                    ImgFile = new ParseFile(buildingName.getText().toString(), image);
+                }
                 try {
-                    ImgFile.save();
+                    if( ImgFile != null )
+                        ImgFile.save();
                     parameters.put("bathroomName",buildingName.getText().toString());
                     parameters.put("description",addComments.getText().toString());
                     parameters.put("geoPoint",location);
@@ -75,7 +78,9 @@ public class AddBathroom extends ActionBarActivity {
                     review.save();
                     relation.add(review);
                     bathroom.put("geoPoint", location);
-                    bathroom.put("ImgFile",ImgFile);
+                    if(ImgFile!=null) {
+                        bathroom.put("ImgFile", ImgFile);
+                    }
                     bathroom.save();
 //                    ParseCloud.callFunctionInBackground("addBathroom", parameters, new FunctionCallback() {
 //                        public void done(Object object,com.parse.ParseException e) {
