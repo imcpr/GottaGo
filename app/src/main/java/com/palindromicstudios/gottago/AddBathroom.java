@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FunctionCallback;
@@ -22,6 +23,8 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
+
+import org.apache.http.client.utils.URIUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -65,27 +68,33 @@ public class AddBathroom extends ActionBarActivity {
                 HashMap<String,Object> parameters = new HashMap<String,Object>();
                 ParseFile ImgFile = null;
                 if (image!=null) {
-                    ImgFile = new ParseFile(buildingName.getText().toString(), image);
+                    String newFileName = buildingName.getText().toString();
+                    newFileName = newFileName.replaceAll("[^\\w\\s-]", "");
+                    ImgFile = new ParseFile(newFileName, image);
                 }
                 try {
-                    if( ImgFile != null )
-                        ImgFile.save();
-                    parameters.put("bathroomName",buildingName.getText().toString());
-                    parameters.put("description",addComments.getText().toString());
-                    parameters.put("geoPoint",location);
-                    parameters.put("ImgFile",ImgFile);
+                    if( ImgFile != null )   ImgFile.save();
                     ParseObject bathroom = new ParseObject("Bathroom");
+
                     ParseRelation<ParseObject> relation = bathroom.getRelation("description");
                     bathroom.put("bathroomName",buildingName.getText().toString());
-                    ParseObject review = new ParseObject("Review");
-                    review.put("content", addComments.getText().toString());
-                    review.save();
-                    relation.add(review);
+                    if (!addComments.getText().toString().isEmpty()) {
+                        ParseObject review = new ParseObject("Review");
+                        review.put("content", addComments.getText().toString());
+                        review.save();
+                        relation.add(review);
+                    }
                     bathroom.put("geoPoint", location);
                     if(ImgFile!=null) {
                         bathroom.put("ImgFile", ImgFile);
                     }
-                    bathroom.save();
+                    try{
+                        bathroom.save();
+
+                    }
+                    catch(Exception e){
+                        //Toast.makeText(AddBathroom.this,e.toString(),Toast.LENGTH_LONG).show();
+                    }
 //                    ParseCloud.callFunctionInBackground("addBathroom", parameters, new FunctionCallback() {
 //                        public void done(Object object,com.parse.ParseException e) {
 //
@@ -103,6 +112,7 @@ public class AddBathroom extends ActionBarActivity {
                     AddBathroom.this.finish();
                 } catch (Exception e) {
                     Log.e("image save error", e.toString());
+                    //Toast.makeText(AddBathroom.this, "AA:" + e.toString(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -122,9 +132,15 @@ public class AddBathroom extends ActionBarActivity {
                         Uri selectedImage = imageReturnedIntent.getData();
                         InputStream imageStream = getContentResolver().openInputStream(selectedImage);
                         Bitmap selectedImg = BitmapFactory.decodeStream(imageStream);
+                        imageStream.close();
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        selectedImg.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        selectedImg.compress(Bitmap.CompressFormat.JPEG, 30, stream);
                         image = stream.toByteArray();
+                        if(image!=null){
+                            TextView imgStatus= (TextView)findViewById(R.id.imgStatus);
+                            imgStatus.setText("Image attached");
+                        }
+                        stream.close();
 
                     } catch (Exception e) {
                         Log.e("AddBathroom class image error", e.toString());

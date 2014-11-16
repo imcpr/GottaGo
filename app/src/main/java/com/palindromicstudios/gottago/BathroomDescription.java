@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +42,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,6 +53,8 @@ public class BathroomDescription extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private byte[] image;
+    final int SELECT_PHOTO= 1;
     TextView rating;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +85,7 @@ public class BathroomDescription extends ActionBarActivity {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 ParseGeoPoint geoPoint = MainPage.items.get(position).getParseGeoPoint("geoPoint");
                 intent.setData(Uri.parse("geo:" + geoPoint.getLatitude() + "," + geoPoint.getLongitude() + "?q=" +
-                geoPoint.getLatitude() + "," + geoPoint.getLongitude() + "(" + MainPage.items.get(position).getString("bathroomName") + ")"));
+                        geoPoint.getLatitude() + "," + geoPoint.getLongitude() + "(" + MainPage.items.get(position).getString("bathroomName") + ")"));
                 startActivity(intent);
             }
         });
@@ -212,9 +218,11 @@ public class BathroomDescription extends ActionBarActivity {
         });
 
         ParseFile image = MainPage.items.get(position).getParseFile("ImgFile");
+        ImageButton addImageView = (ImageButton) findViewById(R.id.addImageButton);
         ParseImageView parseImageView = (ParseImageView) findViewById(R.id.parseImageView);
-        parseImageView.setVisibility(View.VISIBLE);
+        addImageView.setVisibility(View.GONE);
         if (image != null) {
+            parseImageView.setVisibility(View.VISIBLE);
             parseImageView.setParseFile(image);
             parseImageView.loadInBackground(new GetDataCallback() {
                 public void done(byte[] data, ParseException e) {
@@ -225,6 +233,19 @@ public class BathroomDescription extends ActionBarActivity {
             });
         }
         else {
+            parseImageView.setVisibility(View.GONE);
+            addImageView.setVisibility(View.VISIBLE);
+            addImageView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, SELECT_PHOTO);
+                }
+
+            });
+
+
+
             parseImageView.setVisibility(View.GONE);
         }
 
@@ -285,6 +306,51 @@ public class BathroomDescription extends ActionBarActivity {
             super(v);
             text = (TextView) v.findViewById(R.id.text1);
             container = (CardView) v.findViewById(R.id.card_view);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch(requestCode) {
+            case SELECT_PHOTO:
+                if(resultCode == RESULT_OK){
+                    try {
+                        Log.d("INTENT DATA", imageReturnedIntent.getData().toString());
+                        Uri selectedImage = imageReturnedIntent.getData();
+                        InputStream imageStream = getContentResolver().openInputStream(selectedImage);
+                        Bitmap selectedImg = BitmapFactory.decodeStream(imageStream);
+                        imageStream.close();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        selectedImg.compress(Bitmap.CompressFormat.JPEG, 30, stream);
+                        image = stream.toByteArray();
+                        stream.close();
+                        ParseFile ImgFile = null;
+                        if(image!=null){
+                            ImgFile = new ParseFile(image);
+                            try {
+                                MainPage.items.get(position).put("ImgFile", ImgFile);
+                                MainPage.items.get(position).save();
+                            }
+                            catch(Exception e){
+                                //Toast.makeText(BathroomDescription.this,e.toString(),Toast.LENGTH_LONG).show();
+
+                            }
+                            Intent intent = new Intent(BathroomDescription.this, BathroomDescription.class);
+
+                            intent.putExtra("position", position);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else{
+                            Toast.makeText(BathroomDescription.this, "Image submission failed.", Toast.LENGTH_SHORT).show();
+
+                        }
+                    } catch (Exception e) {
+                        Log.e("AddBathroom class image error", e.toString());
+                    }
+
+                }
         }
     }
 }

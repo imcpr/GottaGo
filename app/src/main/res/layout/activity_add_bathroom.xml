@@ -50,6 +50,7 @@
         android:text="Upload an image here..."
         android:textSize="15dp"
         android:layout_width="wrap_content"
+        android:id="@+id/imgStatus"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/addImageButton"
         android:layout_alignParentLeft="true"
