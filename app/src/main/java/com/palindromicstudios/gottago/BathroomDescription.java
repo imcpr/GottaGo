@@ -21,6 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,9 +69,10 @@ public class BathroomDescription extends ActionBarActivity {
 
 
 
-        final Button rateUp, rateDown, addDescription;
-        rateUp = (Button) findViewById(R.id.rate_up);
-        rateDown = (Button) findViewById(R.id.rate_down);
+        final ImageButton rateUp, rateDown;
+        final Button addDescription;
+        rateUp = (ImageButton) findViewById(R.id.rate_up);
+        rateDown = (ImageButton) findViewById(R.id.rate_down);
         rating = (TextView) findViewById(R.id.rating);
         rating.setText(String.valueOf(MainPage.items.get(position).getInt("rating")));
         addDescription = (Button) findViewById(R.id.buttonAddDescription);
