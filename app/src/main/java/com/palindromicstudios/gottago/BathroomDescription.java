@@ -123,6 +123,10 @@ public class BathroomDescription extends ActionBarActivity {
                 alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String value = input.getText().toString();
+                        if (value.isEmpty()) {
+                            Toast.makeText(BathroomDescription.this, "Whoops! Don't forget to enter your comment.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         ParseRelation relation = MainPage.items.get(position).getRelation("description");
                         ParseObject newReview = new ParseObject("Review");
                         newReview.put("content", value); //input is the text that the user entered
@@ -209,14 +213,20 @@ public class BathroomDescription extends ActionBarActivity {
 
         ParseFile image = MainPage.items.get(position).getParseFile("ImgFile");
         ParseImageView parseImageView = (ParseImageView) findViewById(R.id.parseImageView);
-        parseImageView.setParseFile(image);
-        parseImageView.loadInBackground(new GetDataCallback(){
-            public void done(byte[] data, ParseException e){
-                Log.v("load image success","loaded shit");
-                if (e != null) Log.e("Image error", e.toString());
-            }
+        parseImageView.setVisibility(View.VISIBLE);
+        if (image != null) {
+            parseImageView.setParseFile(image);
+            parseImageView.loadInBackground(new GetDataCallback() {
+                public void done(byte[] data, ParseException e) {
+                    Log.v("load image success", "loaded shit");
+                    if (e != null) Log.e("Image error", e.toString());
+                }
 
-        });
+            });
+        }
+        else {
+            parseImageView.setVisibility(View.GONE);
+        }
 
     }
 

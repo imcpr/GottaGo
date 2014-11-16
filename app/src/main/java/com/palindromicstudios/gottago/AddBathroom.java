@@ -55,10 +55,14 @@ public class AddBathroom extends ActionBarActivity {
         submitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseGeoPoint location= new ParseGeoPoint(MainPage.aLat,MainPage.aLong);
-                HashMap<String,Object> parameters = new HashMap<String,Object>();
                 EditText buildingName = (EditText) findViewById(R.id.buildingText);
                 EditText addComments = (EditText) findViewById(R.id.addComments);
+                if (buildingName.getText().toString().isEmpty()) {
+                    Toast.makeText(AddBathroom.this, "Don't forget to enter a bathroom name.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ParseGeoPoint location= new ParseGeoPoint(MainPage.aLat,MainPage.aLong);
+                HashMap<String,Object> parameters = new HashMap<String,Object>();
                 ParseFile ImgFile = null;
                 if (image!=null) {
                     ImgFile = new ParseFile(buildingName.getText().toString(), image);

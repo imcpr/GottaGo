@@ -151,7 +151,7 @@ public class MainPage extends ActionBarActivity  {
                     //startActivity(intent);
                 }
                 else {
-                    Toast.makeText(MainPage.this, "Acquiring location, .", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainPage.this, "Acquiring location.", Toast.LENGTH_SHORT).show();
                 }
 
             }

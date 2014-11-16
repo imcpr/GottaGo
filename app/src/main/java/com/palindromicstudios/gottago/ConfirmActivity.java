@@ -110,6 +110,7 @@ public class ConfirmActivity extends Activity {
         @Override
         public MyHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
             View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_item_layout_with_distance, viewGroup, false);
+            itemView.setOnClickListener(mOnClickListener);
             return new MyHolder(itemView);
         }
 
@@ -124,6 +125,16 @@ public class ConfirmActivity extends Activity {
             }
         }
     }
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int position = confirmList.getChildPosition(v);
+            //String item = MainPage.items.get(position).getString("bathroomName");
+            Intent intent = new Intent(ConfirmActivity.this, BathroomDescription.class);
+            intent.putExtra("position", position);
+            startActivity(intent);
+        }
+    };
 
 
     public class MyHolder extends RecyclerView.ViewHolder {
