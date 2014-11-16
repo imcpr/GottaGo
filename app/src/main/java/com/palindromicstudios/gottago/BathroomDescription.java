@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
@@ -30,6 +31,7 @@ import com.parse.FunctionCallback;
 import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -67,7 +69,17 @@ public class BathroomDescription extends ActionBarActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
+        ImageButton mapBtn = (ImageButton) findViewById(R.id.launch_map_btn);
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                ParseGeoPoint geoPoint = MainPage.items.get(position).getParseGeoPoint("geoPoint");
+                intent.setData(Uri.parse("geo:" + geoPoint.getLatitude() + "," + geoPoint.getLongitude() + "?q=" +
+                geoPoint.getLatitude() + "," + geoPoint.getLongitude() + "(" + MainPage.items.get(position).getString("bathroomName") + ")"));
+                startActivity(intent);
+            }
+        });
 
         final ImageButton rateUp, rateDown;
         final Button addDescription;
