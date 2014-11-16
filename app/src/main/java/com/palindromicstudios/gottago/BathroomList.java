@@ -39,6 +39,7 @@ public class BathroomList extends ActionBarActivity {
         setContentView(R.layout.activity_bathroom_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+        toolbar.setTitle("Near You");
         setSupportActionBar(toolbar);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.bathroom_list);

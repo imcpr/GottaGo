@@ -100,6 +100,8 @@
             android:src="@drawable/thumbs_up" />
 
             <ImageButton
+                android:layout_marginLeft="20dp"
+                android:background="@null"
                 android:id="@+id/launch_map_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

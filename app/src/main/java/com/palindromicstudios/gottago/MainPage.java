@@ -44,12 +44,17 @@ public class MainPage extends ActionBarActivity  {
     public static double aLong = 0.0;
     public static double aLat = 0.0;
     public static List<ParseObject> items;
+    ImageButton peeButton, addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         items = new ArrayList<ParseObject>();
+        peeButton = (ImageButton) findViewById(R.id.peeButton);
+        addButton = (ImageButton) findViewById(R.id.addButton);
+
+
 //        items.add("Starbucks (Parc/Sherbrooke)");
 //        items.add("Second Cup (Parc/Milton");
 //        items.add("Schulich Music Building (Sherbrooke/Aylmer)");
@@ -100,7 +105,7 @@ public class MainPage extends ActionBarActivity  {
         blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
         blinkanimation.setRepeatMode(Animation.REVERSE);
 
-        ImageButton peeButton = (ImageButton) findViewById(R.id.peeButton);
+
         peeButton.startAnimation(blinkanimation);
         peeButton.setOnClickListener( new View.OnClickListener() {
 
@@ -108,6 +113,7 @@ public class MainPage extends ActionBarActivity  {
             public void onClick(View v) {
                 if (hasLocation) {
                     items.clear();
+                    peeButton.setClickable(false);
 
                     ParseGeoPoint location= new ParseGeoPoint(aLat,aLong);
                     HashMap<String,Object> parameters = new HashMap<String,Object>();
@@ -145,50 +151,63 @@ public class MainPage extends ActionBarActivity  {
                     //startActivity(intent);
                 }
                 else {
-                    Toast.makeText(MainPage.this, "Please try again later.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainPage.this, "Acquiring location, .", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
-        ImageButton addButton = (ImageButton) findViewById(R.id.addButton);
+
+
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
             {
-                items.clear();
-                ParseGeoPoint location= new ParseGeoPoint(aLat,aLong);
-                HashMap<String,Object> parameters = new HashMap<String,Object>();
-                parameters.put("location",location);
-                parameters.put("limit", 5);
-                mLocationManager.removeUpdates(locationListener);
+                if (hasLocation) {
+                    addButton.setClickable(false);
+                    items.clear();
+                    ParseGeoPoint location = new ParseGeoPoint(aLat, aLong);
+                    HashMap<String, Object> parameters = new HashMap<String, Object>();
+                    parameters.put("location", location);
+                    parameters.put("limit", 5);
+                    mLocationManager.removeUpdates(locationListener);
 
-                ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
-                    @Override
-                    public void done(List<ParseObject> objects, ParseException e) {
+                    ParseCloud.callFunctionInBackground("checkBathroom", parameters, new FunctionCallback<List<ParseObject>>() {
+                        @Override
+                        public void done(List<ParseObject> objects, ParseException e) {
 
-                        if (e == null) {
-                            if (objects.size() > 0) {
-                                for (int i = 0; i < objects.size(); i++) {
-                                    items.add(objects.get(i));
+                            if (e == null) {
+                                if (objects.size() > 0) {
+                                    for (int i = 0; i < objects.size(); i++) {
+                                        items.add(objects.get(i));
+                                    }
+                                    Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Intent intent = new Intent(MainPage.this, AddBathroom.class);
+                                    startActivity(intent);
                                 }
-                                Intent intent = new Intent(MainPage.this, ConfirmActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Intent intent = new Intent(MainPage.this, AddBathroom.class);
-                                startActivity(intent);
-                            }
-                            overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+                                overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
 
-                        } else {
-                            Log.e("checkBathroom failed", e.toString());
+                            } else {
+                                Log.e("checkBathroom failed", e.toString());
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                else {
+                    Toast.makeText(MainPage.this, "Still acquiring location!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        peeButton.setClickable(true);
+        addButton.setClickable(true);
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
