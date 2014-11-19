@@ -1,16 +1,76 @@
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:padding="16dp"
+    android:layout_margin="10dp"
     tools:context="com.palindromicstudios.gottago.AddBathroom">
 
     <TextView
-        android:text="Add button"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Bathroom Name:"
+        android:id="@+id/textView2" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buildingText"
+        android:layout_below="@id/textView2"
+        android:textSize="20sp"
+        android:padding="5dp"
+        android:background="@drawable/edittext_bg"/>
+
+
+    <TextView
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Comments or description:"
+        android:layout_below="@id/buildingText"
+        android:id="@+id/textView3" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addComments"
+        android:layout_below="@id/textView3"
+
+        android:minHeight="100dp"
+        android:textSize="20sp"
+        android:padding="5dp"
+        android:background="@drawable/edittext_bg" />
+
+    <TextView
+        android:text="Upload an image here..."
+        android:textSize="15dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/imgStatus"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addImageButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:id="@+id/addImageButton"
+        android:text="Attach"
+        android:layout_below="@id/addComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"/>
+
+
+    <Button
+        android:text="Submit"
+        android:background="@android:color/white"
+        android:id="@+id/add_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
 
 </RelativeLayout>

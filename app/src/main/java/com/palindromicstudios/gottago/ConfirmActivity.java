@@ -1,75 +1,84 @@
 package com.palindromicstudios.gottago;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
-import java.lang.reflect.AccessibleObject;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class BathroomList extends ActionBarActivity {
 
-    private double aLong;
-    private double aLat;
-    private RecyclerView mRecyclerView;
+public class ConfirmActivity extends Activity {
+
+    private RecyclerView confirmList;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bathroom_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        toolbar.setTitle("Near You");
-        setSupportActionBar(toolbar);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.bathroom_list);
-        mRecyclerView.setHasFixedSize(true);
+        setContentView(R.layout.activity_confirm);
+        confirmList = (RecyclerView) findViewById(R.id.confirmListView);
+        confirmList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        confirmList.setLayoutManager(mLayoutManager);
+        mAdapter = new MyAdapter(MainPage.items);
+        confirmList.setAdapter(mAdapter);
 
-        try {
-            mAdapter = new MyAdapter(MainPage.items);
-            mRecyclerView.setAdapter(mAdapter);
-        } catch (NullPointerException e) {
-            Log.e("BULLSHIT", e.toString());
-        }
+        Button noButton = (Button) findViewById(R.id.buttonDeclineAdd);
+        noButton.setOnClickListener( new View.OnClickListener() {
 
-    }
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                finish();
+                Log.v("backpressed", "gobackkk");
+            }
+        });
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+        Button yesButton = (Button) findViewById(R.id.buttonConfirmAdd);
+        yesButton.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent(ConfirmActivity.this, AddBathroom.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+            }
+        });
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.bathroom_list, menu);
+        getMenuInflater().inflate(R.menu.menu_confirm, menu);
         return true;
     }
-
 
     public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         private List<ParseObject> items;
@@ -116,19 +125,17 @@ public class BathroomList extends ActionBarActivity {
             }
         }
     }
-
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.d("AA", "1");
-            int position = mRecyclerView.getChildPosition(v);
+            int position = confirmList.getChildPosition(v);
             //String item = MainPage.items.get(position).getString("bathroomName");
-            Intent intent = new Intent(BathroomList.this, BathroomDescription.class);
+            Intent intent = new Intent(ConfirmActivity.this, BathroomDescription.class);
             intent.putExtra("position", position);
             startActivity(intent);
-            Log.d("AA", "2");
         }
     };
+
 
     public class MyHolder extends RecyclerView.ViewHolder {
         private TextView text, distance;
@@ -140,4 +147,5 @@ public class BathroomList extends ActionBarActivity {
             container = (CardView) v.findViewById(R.id.card_view);
         }
     }
+
 }
